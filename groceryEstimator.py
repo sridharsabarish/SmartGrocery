@@ -52,7 +52,7 @@ def process_grocery_data(month):
     item_costs_df = pd.DataFrame(item_costs, columns=['Item', 'Total Cost'])
     item_costs_df.to_csv('grocery_data.csv', index=False)
     # Plot a pie chart
-    top_10_items = item_costs_df.nlargest(10, 'Total Cost')
+    top_10_items = item_costs_df.nlargest(20, 'Total Cost')
     plt.figure(figsize=(16, 16))
     other_items = item_costs_df.iloc[10:]
     other_items_cost = other_items['Total Cost'].sum()
@@ -64,10 +64,11 @@ def process_grocery_data(month):
     return item_costs_df
 
 import os
-months = [f for f in os.listdir('.') if os.path.isdir(f)]
-#months=["July","August","September","October"]
+#months = [f for f in os.listdir('.') if os.path.isdir(f)]
+months=["July","August","September","October","December"]
 a=[]
 for m in months:
+    print("Going through ", m)
     a.append(process_grocery_data(m))
 
 combined_df = pd.concat(a, ignore_index=True)
