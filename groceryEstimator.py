@@ -65,16 +65,37 @@ def process_grocery_data(month):
 
 import os
 #months = [f for f in os.listdir('.') if os.path.isdir(f)]
-months=["July","August","September","October","December"]
+months=["July","August","September","October","November","December", "January", "February"]
 a=[]
 for m in months:
     print("Going through ", m)
     a.append(process_grocery_data(m))
+    
 
 combined_df = pd.concat(a, ignore_index=True)
+combined_df['Item'] = combined_df['Item'].str.replace('*', '')
+combined_df['Item'] = combined_df['Item'].str.replace(',', '')
+combined_df['Item'] = combined_df['Item'].str.lstrip()
+combined_df['Item'] = combined_df['Item'].apply(lambda x: x.split()[0])
+combined_df = combined_df.sort_values(by='Item', ascending=True)
+combined_df = combined_df[~combined_df['Item'].str.isdigit()]
 
-#combined_df = pd.concat([a, b, c, d], ignore_index=True)
+
+combined_df['Frequency'] = combined_df.groupby('Item')['Item'].transform('count')
+combined_df['Per Month'] = combined_df['Frequency'] / len(months-1)
+
+combined_df = combined_df.drop_duplicates(subset='Item')
+combined_df = combined_df[['Item', 'Frequency','Per Month']].sort_values(by='Frequency', ascending=False)
 print(combined_df)
 
 
-combined_df.to_excel('combined_grocery_data.xlsx', index=False)
+combined_df.to_csv('combined_grocery_data.csv', index=False)
+
+
+'''
+Todo :
+
+1. Connect the Df to a database and store the information?
+2. Make it easy to see the purchase trends?
+
+'''
