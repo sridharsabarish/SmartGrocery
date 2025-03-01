@@ -50,7 +50,7 @@ def process_grocery_data(month):
         item_costs.append([item, all_df[all_df['Beskrivning'] == item]['Summa(SEK)'].sum()])
 
     item_costs_df = pd.DataFrame(item_costs, columns=['Item', 'Total Cost'])
-    item_costs_df.to_csv('grocery_data.csv', index=False)
+    item_costs_df.to_csv('outputs/grocery_data.csv', index=False)
     # Plot a pie chart
     top_10_items = item_costs_df.nlargest(20, 'Total Cost')
     plt.figure(figsize=(16, 16))
@@ -60,7 +60,7 @@ def process_grocery_data(month):
     plt.pie(top_10_items['Total Cost'], labels=[f'{item}\n{cost:.2f} SEK' for item, cost in zip(top_10_items['Item'], top_10_items['Total Cost'])], autopct='%1.1f%%')
     plt.title('Total Cost per Top 10 Items')
     plt.legend(top_10_items['Item'], loc='upper left')
-    plt.savefig('top_10_items'+month+'.png')
+    plt.savefig('outputs/top_10_items'+month+'.png')
     return item_costs_df
 
 import os
@@ -82,14 +82,15 @@ combined_df = combined_df[~combined_df['Item'].str.isdigit()]
 
 
 combined_df['Frequency'] = combined_df.groupby('Item')['Item'].transform('count')
-combined_df['Per Month'] = combined_df['Frequency'] / len(months-1)
 
 combined_df = combined_df.drop_duplicates(subset='Item')
-combined_df = combined_df[['Item', 'Frequency','Per Month']].sort_values(by='Frequency', ascending=False)
+combined_df = combined_df[['Item', 'Frequency']].sort_values(by='Frequency', ascending=False)
 print(combined_df)
 
 
-combined_df.to_csv('combined_grocery_data.csv', index=False)
+combined_df.to_csv('outputs/combined_grocery_data.csv', index=False)
+top_10_items = combined_df.nlargest(10, 'Frequency')
+top_10_items.to_csv('outputs/top_ten_item.csv',index=False);
 
 
 '''
