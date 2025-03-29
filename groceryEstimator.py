@@ -167,8 +167,8 @@ def main():
     
     combined_df = cleanup_dataframe(combined_df)
     combined_df.to_csv('outputs/combined_grocery_data.csv', index=False)
-    top_10_items = combined_df.nlargest(10, 'Frequency')
-    top_10_items.to_csv('outputs/top_ten_item.csv',index=False);
+    top_10_items = combined_df.nlargest(20, 'Frequency')
+    top_10_items.to_csv('outputs/shoppinglist/top_twenty_item.csv',index=False);
 
     #make_charts(combined_df)
     
