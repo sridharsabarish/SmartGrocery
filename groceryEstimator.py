@@ -94,7 +94,7 @@ class Visuals:
 
 
         
-    def make_pi_chart(self,top_10_items):
+    def make_pi_chart(self,top_10_items,month):
         
         plt.figure(figsize=(16, 16))
         plt.pie(top_10_items['Total Cost'], labels=[f'{item}\n{cost:.2f} SEK' for item, cost in zip(top_10_items['Item'], top_10_items['Total Cost'])], autopct='%1.1f%%')

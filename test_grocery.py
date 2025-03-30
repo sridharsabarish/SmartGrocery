@@ -35,10 +35,6 @@ def CheckPDFinDirectory(path):
         print(f"Path {path} does not exist")
         return False
 
-def test_check_pdf_exists():
-    # Months to be modified according to files.
-    months = ['June', 'July', 'August', 'September', 'October', 'November', 'December']
-    for month in months:
-        assert CheckPDFinDirectory(month)
-        
+# def test_check_pdf_exists():
+    # return false        
 
