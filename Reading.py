@@ -55,12 +55,34 @@ class Reading:
             df = self.read_data_from_pdf(filename)
             
             logger.info("Data frame collected from pdf")
+            logger.debug(df['Summa(SEK)'])
+            
+            
+            
+            
+            ## Current problem
+            
+            
+            df['Summa(SEK)'] = df['Summa(SEK)'].str.replace(',','.')
+            logger.debug("Changing , to .")
             logger.debug(df)
             
+            df = df.dropna(subset=['Summa(SEK)'])
+            logger.debug("Removed na values")
             
+        
+        
+            for i in df['Summa(SEK)']:
+                if i=="None":
+                    logger.debug("Empty")
+                    df = df.drop(df[df['Summa(SEK)'] == i].index)
+                    
+                logger.debug(f"Length of {i} is {len(i)}")
+            
+            
+
             
             df['Summa(SEK)'] = df['Summa(SEK)'].astype(float)
-            logger.debug(f"Summa(SEK) now {df['Summa(sek)']}")
             total_cost += df['Summa(SEK)'].sum()
             logger.debug("Total cost obtained as")
             

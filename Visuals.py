@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 class Visuals:
     def make_charts(self,combined_df):
         # Plot a bar chart for item frequencies

@@ -56,7 +56,15 @@ def main():
         b.append(total_cost);
          
     combined_df = pd.concat(a, ignore_index=True)
-    logger.info("Combined df looks like {combined_df}")
+    logger.info(f"Combined df looks like \n {combined_df}")
+# Splitting the 'Item' column into 'ActualName' and 'Key' based on space separation
+    combined_df[['Name', 'ProductID']] = combined_df['Item'].str.split(' ', n=1, expand=True)
+
+    # Creating a new DataFrame with 'ActualName' and 'Key' columns
+    new_combined_df = combined_df[['Name', 'ProductID', 'Total Cost']]
+
+    logger.info(f"New combined df with separated name and key looks like \n {new_combined_df}")
+
 
     
     
@@ -65,10 +73,11 @@ def main():
     top_10_items = combined_df.nlargest(20, 'Frequency')
     top_10_items.to_csv('outputs/shoppinglist/top_twenty_item.csv',index=False);
 
-    #make_charts(combined_df)
+
     
-    from matplotlib import pyplot as plt
+  
     chart = Visuals()
+    chart.make_charts(combined_df)
     chart.generate_purchase_trend(months,b)
     
 main()
