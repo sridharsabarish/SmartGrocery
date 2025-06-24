@@ -7,7 +7,7 @@ from Visuals import Visuals
 from loguru import logger
 def create_monthly_shopping_list():
     # Todo : A template for what needs to be done.
-    print("TBD")
+    logger.info("TBD")
     
 
 
@@ -44,16 +44,19 @@ def main():
    
     
     
-    #Todo : Good to maybe create a folder called data and let the code figure out the names of the directory
-    #months=["July","August","September","October","November","December", "January", "February"]
+ 
     a=[]
     b =[]
     
     for m in months_full:
         logger.debug(f"Going through{m}")
+        
+
         total_cost, new_df = reader.read_monthly_grocery_data(m)
         a.append(new_df)
         b.append(total_cost);
+         
+        
          
     combined_df = pd.concat(a, ignore_index=True)
     logger.info(f"Combined df looks like \n {combined_df}")

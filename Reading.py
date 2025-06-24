@@ -1,9 +1,11 @@
 import PyPDF2
 import pandas as pd
 import glob
+from Visuals import Visuals
 from loguru import logger
 class Reading:
     
+    magic_words = ["Betalat","Total"]
     def read_data_from_pdf(self, filename):
       
       
@@ -26,16 +28,31 @@ class Reading:
                     logger.debug("Iterating each line")
                     for l in lines[lines.index(line) + 1:]:
                         logger.debug(l)
-                        if "Betalat" in l:
+                        if any(magic_word in l for magic_word in self.magic_words):
                             break
                         result.append(l)
             logger.debug(f"Result :{result}")
             output_string = '\n'.join(result)
             logger.debug(f"Output string is :{output_string}")
             
+            
+            
+ 
+            
             #TODO : check the logic below its seems a bit off
-            df = pd.DataFrame([x.rsplit(None, 4) for x in output_string.split('\n')], columns=header)
-            df[header[4]] = df[header[4]].astype(str)
+            
+            logger.error(filename)
+            filename_parts = filename.split('/')
+            month = filename_parts[-2]
+            logger.debug(f"Month is :{month}")
+            
+            column_values = 5;
+            if month >= '2025-04':
+                column_values = 4
+            
+            
+            df = pd.DataFrame([x.rsplit(None, column_values) for x in output_string.split('\n')], columns=header)
+            df[header[column_values]] = df[header[column_values]].astype(str)
             logger.debug(f"Data Frame : {df}")
             # new_df = df[[header[0], header[1], header[2], header[4]]]
             return df
@@ -112,10 +129,10 @@ class Reading:
 
         other_items = item_costs_df.iloc[10:]
         other_items_cost = other_items['Total Cost'].sum()
-        top_10_items.loc[len(top_10_items)] = ['Other', other_items_cost]
-        # chart = Visual();
-        #chart.make_pi_chart(top_10_items)
-        print("Month: ",month," Total cost : ", total_cost)
+        # top_10_items.loc[len(top_10_items)] = ['Other', other_items_cost]
+        # chart = Visuals();
+        # chart.make_pi_chart(top_10_items,month)
+        logger.info("Month: ",month," Total cost : ", total_cost)
 
         return total_cost,item_costs_df
 

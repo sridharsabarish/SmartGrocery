@@ -16,6 +16,7 @@ class Visuals:
         
     def make_pi_chart(self,top_10_items,month):
         
+        
         plt.figure(figsize=(16, 16))
         plt.pie(top_10_items['Total Cost'], labels=[f'{item}\n{cost:.2f} SEK' for item, cost in zip(top_10_items['Item'], top_10_items['Total Cost'])], autopct='%1.1f%%')
         plt.title('Total Cost per Top 10 Items')
@@ -23,6 +24,7 @@ class Visuals:
         plt.savefig('outputs/top_10_items'+month+'.png')   
         
     def generate_purchase_trend(self,months, b):
+        plt.figure(figsize=(12, 8))
         plt.plot(months, b, marker='o', linestyle='-')
         plt.xlabel('Months')
         plt.ylabel('Total Cost')
