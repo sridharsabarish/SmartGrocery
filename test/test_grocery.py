@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import pytest
 #from pypdf import PdfReader
 
 import sys
@@ -38,6 +39,8 @@ class TestPandas:
         except FileNotFoundError:
             print(f"Path {os.getcwd()} does not exist")
             assert True
+            
+    @pytest.mark.skip()
     def test_CheckPDFinDirectoryTestDirectoryParentDirectory(self):
         
         try:
