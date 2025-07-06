@@ -33,7 +33,7 @@ def main():
     
     
    
-    directory = './input'
+    directory = '../input'
 
     months = [folder for folder in os.listdir(directory) if os.path.isdir(os.path.join(directory, folder))]
     months.sort(key=lambda x: datetime.strptime(os.path.basename(x), "%Y-%m"))
@@ -72,9 +72,9 @@ def main():
     
     
     combined_df = cleanup_dataframe(combined_df)
-    combined_df.to_csv('outputs/combined_grocery_data.csv', index=False)
+    combined_df.to_csv('../outputs/combined_grocery_data.csv', index=False)
     top_10_items = combined_df.nlargest(20, 'Frequency')
-    top_10_items.to_csv('outputs/shoppinglist/top_twenty_item.csv',index=False);
+    top_10_items.to_csv('../outputs/shoppinglist/top_twenty_item.csv',index=False);
 
 
     

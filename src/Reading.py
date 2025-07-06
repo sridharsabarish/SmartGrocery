@@ -123,7 +123,7 @@ class Reading:
             item_costs.append([item, all_df[all_df['Beskrivning'] == item]['Summa(SEK)'].sum()])
 
         item_costs_df = pd.DataFrame(item_costs, columns=['Item', 'Total Cost'])
-        item_costs_df.to_csv('outputs/grocery_data.csv', index=False)
+        item_costs_df.to_csv('../outputs/grocery_data.csv', index=False)
         # Plot a pie chart
         top_10_items = item_costs_df.nlargest(20, 'Total Cost')
 

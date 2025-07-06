@@ -10,7 +10,7 @@ class Visuals:
         plt.title('Frequency of Items Purchased (Frequency >= 2)')
         plt.xticks(rotation=90)
         plt.tight_layout()
-        plt.savefig('outputs/item_frequencies.png')
+        plt.savefig('../outputs/item_frequencies.png')
 
 
         
@@ -21,7 +21,7 @@ class Visuals:
         plt.pie(top_10_items['Total Cost'], labels=[f'{item}\n{cost:.2f} SEK' for item, cost in zip(top_10_items['Item'], top_10_items['Total Cost'])], autopct='%1.1f%%')
         plt.title('Total Cost per Top 10 Items')
         plt.legend(top_10_items['Item'], loc='upper left')
-        plt.savefig('outputs/top_10_items'+month+'.png')   
+        plt.savefig('../outputs/top_10_items'+month+'.png')   
         
     def generate_purchase_trend(self,months, b):
         plt.figure(figsize=(12, 8))
