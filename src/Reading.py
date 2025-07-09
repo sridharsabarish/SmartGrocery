@@ -12,28 +12,28 @@ class Reading:
         pdfFileObj = open(filename, 'rb')
         pdfReader = PyPDF2.PdfReader(pdfFileObj)
         num_pages = len(pdfReader.pages)
-        logger.debug(f'Num_pages = {num_pages}')
+        logger.trace(f'Num_pages = {num_pages}')
         for page in range(num_pages):
             pageObj = pdfReader.pages[page]
             text = str(pageObj.extract_text())
-            logger.debug(f"Text is \n {text}")
+            logger.trace(f"Text is \n {text}")
             lines = text.split('\n')
             result = []
             header = []
-            logger.info("Going through each line")
+            logger.trace("Going through each line")
             for line in lines:
                 if "Beskrivning" in line:
                     header = line.split()
-                    logger.debug(header)
-                    logger.debug("Iterating each line")
+                    logger.trace(header)
+                    logger.trace("Iterating each line")
                     for l in lines[lines.index(line) + 1:]:
-                        logger.debug(l)
+                        logger.trace(l)
                         if any(magic_word in l for magic_word in self.magic_words):
                             break
                         result.append(l)
-            logger.debug(f"Result :{result}")
+            logger.trace(f"Result :{result}")
             output_string = '\n'.join(result)
-            logger.debug(f"Output string is :{output_string}")
+            logger.trace(f"Output string is :{output_string}")
             
             
             
@@ -41,10 +41,10 @@ class Reading:
             
             #TODO : check the logic below its seems a bit off
             
-            logger.error(filename)
+            logger.trace(filename)
             filename_parts = filename.split('/')
             month = filename_parts[-2]
-            logger.debug(f"Month is :{month}")
+            logger.trace(f"Month is :{month}")
             
             column_values = 5;
             if month >= '2025-04':
@@ -53,7 +53,7 @@ class Reading:
             
             df = pd.DataFrame([x.rsplit(None, column_values) for x in output_string.split('\n')], columns=header)
             df[header[column_values]] = df[header[column_values]].astype(str)
-            logger.debug(f"Data Frame : {df}")
+            logger.trace(f"Data Frame : {df}")
             # new_df = df[[header[0], header[1], header[2], header[4]]]
             return df
 
@@ -67,12 +67,12 @@ class Reading:
         
         
         for filename in glob.glob(month+"/*.pdf"):
-            logger.info(f"Going through {filename}")
+            logger.trace(f"Going through {filename}")
             
             df = self.read_data_from_pdf(filename)
             
-            logger.info("Data frame collected from pdf")
-            logger.debug(df['Summa(SEK)'])
+            logger.trace("Data frame collected from pdf")
+            logger.trace(df['Summa(SEK)'])
             
             
             
@@ -81,31 +81,31 @@ class Reading:
             
             
             df['Summa(SEK)'] = df['Summa(SEK)'].str.replace(',','.')
-            logger.debug("Changing , to .")
-            logger.debug(df)
+            logger.trace("Changing , to .")
+            logger.trace(df)
             
             df = df.dropna(subset=['Summa(SEK)'])
-            logger.debug("Removed na values")
+            logger.trace("Removed na values")
             
         
         
             for i in df['Summa(SEK)']:
                 if i=="None":
-                    logger.debug("Empty")
+                    logger.trace("Empty")
                     df = df.drop(df[df['Summa(SEK)'] == i].index)
                     
-                logger.debug(f"Length of {i} is {len(i)}")
+                logger.trace(f"Length of {i} is {len(i)}")
             
             
 
             
             df['Summa(SEK)'] = df['Summa(SEK)'].astype(float)
             total_cost += df['Summa(SEK)'].sum()
-            logger.debug("Total cost obtained as")
+            logger.trace("Total cost obtained as")
             
             
             
-            logger.debug("Out of debug")
+            logger.trace("Out of debug")
             
             # total_cost = df['Summa(SEK)'].sum()
             # all_df_list = []
@@ -132,7 +132,7 @@ class Reading:
         # top_10_items.loc[len(top_10_items)] = ['Other', other_items_cost]
         # chart = Visuals();
         # chart.make_pi_chart(top_10_items,month)
-        logger.info("Month: ",month," Total cost : ", total_cost)
+        logger.trace("Month: ",month," Total cost : ", total_cost)
 
         return total_cost,item_costs_df
 

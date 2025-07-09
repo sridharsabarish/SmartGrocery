@@ -33,5 +33,3 @@ class Visuals:
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.show()
-
-#months = [f for f in os.listdir('.') if os.path.isdir(f)]

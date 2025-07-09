@@ -1,4 +1,4 @@
-run:
+run: test
 	cd src && python3 -m groceryEstimator.py
 
 .PHONY: run test
