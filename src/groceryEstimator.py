@@ -16,7 +16,7 @@ class groceryEstimator:
         # Todo : A template for what needs to be done.
         logger.error("Not Implemented!")
 
-    def produce_top_10_items(self,combined_df,SIZE=10):
+    def produce_top_20_items(self,combined_df,SIZE=20):
         top_10_items = combined_df.nlargest(SIZE, 'Frequency')
         strs = "../outputs/shoppinglist/top_"+str(SIZE)+"_item.csv"
         top_10_items.to_csv(strs, index=False);
@@ -37,7 +37,7 @@ def main():
     groceryestimator = groceryEstimator()
     df = groceryhelper.get_df()
     logger.debug("Grocery Helper successfully initialized")
-    groceryestimator.produce_top_10_items(combined_df=df)
+    groceryestimator.produce_top_20_items(combined_df=df)
     groceryestimator.produce_outputs(df, groceryhelper.get_months(),groceryhelper.get_b())
     groceryestimator.export_as_CSV(groceryhelper.get_df())
 
